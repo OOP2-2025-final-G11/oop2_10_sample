@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>本編集</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+</head>
+<body>
+    <h1>本を編集</h1>
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for('index') }}">HOME</a></li>
+        <li><a href="{{ url_for('books.list') }}">本一覧</a></li>
+        <li>本編集</li>
+    </ul>
+
+    <form action="{{ url_for('books.edit', books_id=books.id) }}" method="post">
+        <label>タイトル: <input type="text" name="title" value="{{ books.title }}" required></label><br>
+        <label>著者: <input type="text" name="author" value="{{ books.author }}" required></label><br>
+        <label>ISBNコード: <input type="text" name="isbn" value="{{ books.isbn }}" required></label><br>
+        <button type="submit">保存</button>
+    </form>
+</body>
+</html>
