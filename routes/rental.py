@@ -3,7 +3,7 @@ from models import Rental, User, Book
 from datetime import datetime
 
 # Blueprintの作成
-rental_bp = Blueprint('order', __name__, url_prefix='/orders')
+rental_bp = Blueprint('rental', __name__, url_prefix='/rentals')
 
 @rental_bp.route('/')
 def list():
