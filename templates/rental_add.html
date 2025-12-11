@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>貸し出し追加</title>
+</head>
+<body>
+    <h1>貸し出し追加</h1>
+
+    <form action="{{ url_for('rental.add') }}" method="post">
+        <label for="user_id">利用者:
+            <select name="user_id" id="user_id" required>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </label><br>
+        
+        <label for="book_id">本:
+            <select name="book_id" id="book_id" required>
+                {% for book in books %}
+                <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+        </label><br>
+
+        <button type="submit">登録する</button>
+    </form>
+
+    <p><a href="{{ url_for('rental.list') }}">← 戻る</a></p>
+</body>
+</html>

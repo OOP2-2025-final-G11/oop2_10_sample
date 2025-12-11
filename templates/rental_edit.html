@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>貸し出し編集</title>
+</head>
+<body>
+    <h1>貸し出し編集</h1>
+
+    <form action="{{ url_for('rental.edit', rental_id=rental.id) }}" method="post">
+
+        <label for="user_id">利用者:</label>
+        <select name="user_id" id="user_id" required>
+            {% for user in users %}
+                <option value="{{ user.id }}" {% if rental.user.id == user.id %}selected{% endif %}>
+                    {{ user.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="book_id">本:</label>
+        <select name="book_id" id="book_id" required>
+            {% for book in books %}
+                <option value="{{ book.id }}" {% if rental.book.id == book.id %}selected{% endif %}>
+                    {{ book.title }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <button type="submit">更新する</button>
+    </form>
+
+    <p><a href="{{ url_for('rental.list') }}">← 戻る</a></p>
+</body>
+</html>

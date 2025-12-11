@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+</head>
+<body>
+    <h1>{{ title }}</h1>
+
+    <ul class="breadcrumb">
+        <li><a href="{{ url_for('index') }}">HOME</a></li>
+        <li><a href="{{ url_for('order.list') }}">貸し出し一覧</a></li>
+    </ul>
+
+    <a href="{{ url_for('order.add') }}">新規貸し出し追加</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>ユーザー</th>
+                <th>本</th>
+                <th>貸出日</th>
+                <th>返却日</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for rental in items %}
+            <tr>
+                <td><a href="{{ url_for('order.edit', rental_id=rental.id) }}">編集</a></td>
+
+                <td>{{ rental.user.name }}</td>
+                <td>{{ rental.book.title }}</td>
+
+                <td>{{ rental.rental_date.strftime('%Y-%m-%d %H:%M') }}</td>
+
+                <td>
+                    {% if rental.return_date %}
+                        {{ rental.return_date.strftime('%Y-%m-%d %H:%M') }}
+                    {% else %}
+                        未返却
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if not rental.return_date %}
+                    <form action="{{ url_for('order.return_book', rental_id=rental.id) }}"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit">返却</button>
+                    </form>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
