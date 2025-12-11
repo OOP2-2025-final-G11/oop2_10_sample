@@ -1,39 +1,37 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from models import Product
+from models import Books
 
 # Blueprintの作成
-product_bp = Blueprint('product', __name__, url_prefix='/products')
+books_bp = Blueprint('books', __name__, url_prefix='/books')
 
 
-@product_bp.route('/')
+@books_bp.route('/')
 def list():
-    products = Product.select()
-    return render_template('product_list.html', title='製品一覧', items=products)
+    books = books.select()
+    return render_template('books_list.html', title='本一覧', items=books)
 
 
-@product_bp.route('/add', methods=['GET', 'POST'])
+@books_bp.route('/add', methods=['GET', 'POST'])
 def add():
     
     # POSTで送られてきたデータは登録
     if request.method == 'POST':
         name = request.form['name']
-        price = request.form['price']
-        Product.create(name=name, price=price)
-        return redirect(url_for('product.list'))
+        books.create(name=name)
+        return redirect(url_for('books.list'))
     
-    return render_template('product_add.html')
+    return render_template('books_add.html')
 
 
-@product_bp.route('/edit/<int:product_id>', methods=['GET', 'POST'])
-def edit(product_id):
-    product = Product.get_or_none(Product.id == product_id)
-    if not product:
-        return redirect(url_for('product.list'))
+@books_bp.route('/edit/<int:books_id>', methods=['GET', 'POST'])
+def edit(books_id):
+    books = books.get_or_none(books.id == books_id)
+    if not books:
+        return redirect(url_for('books.list'))
 
     if request.method == 'POST':
-        product.name = request.form['name']
-        product.price = request.form['price']
-        product.save()
-        return redirect(url_for('product.list'))
+        books.name = request.form['name']
+        books.save()
+        return redirect(url_for('books.list'))
 
-    return render_template('product_edit.html', product=product)
+    return render_template('books_edit.html', books=books)

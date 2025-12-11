@@ -1,10 +1,10 @@
 from .user import user_bp
-from .product import product_bp
+from .books import books_bp
 from .order import order_bp
 
 # Blueprintをリストとしてまとめる
 blueprints = [
   user_bp,
-  product_bp,
+  books_bp,
   order_bp
 ]

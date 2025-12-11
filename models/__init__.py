@@ -1,13 +1,13 @@
 from peewee import SqliteDatabase
 from .db import db
 from .user import User
-from .product import Product
+from .books import Books
 from .order import Order
 
 # モデルのリストを定義しておくと、後でまとめて登録しやすくなります
 MODELS = [
     User,
-    Product,
+    Books,
     Order,
 ]
 
