@@ -14,8 +14,9 @@
     </ul>
 
     <form action="{{ url_for('books.edit', books_id=books.id) }}" method="post">
-        <label>製品名: <input type="text" name="name" value="{{ books.name }}" required></label><br>
-        <label>本番号: <input type="number" step="1" name="id"required></label><br>
+        <label>タイトル: <input type="text" name="title" value="{{ books.title }}" required></label><br>
+        <label>著者: <input type="text" name="author" value="{{ books.author }}" required></label><br>
+        <label>ISBNコード: <input type="text" name="isbn" value="{{ books.isbn }}" required></label><br>
         <button type="submit">保存</button>
     </form>
 </body>

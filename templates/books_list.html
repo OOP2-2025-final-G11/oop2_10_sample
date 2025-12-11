@@ -17,16 +17,18 @@
         <thead>
             <tr>
                 <th>&nbsp;</th>
-                <th>製品名</th>
-                <th>本番号</th>
+                <th>タイトル</th>
+                <th>著者</th>
+                <th>ISBNコード</th>
             </tr>
         </thead>
         <tbody>
             {% for books in items %}
             <tr>
                 <td><a href="{{ url_for('books.edit', books_id=books.id) }}">編集</a></td>
-                <td>{{ books.name }}</td>
-                <td>{{ books.id }}</td>
+                <td>{{ books.title }}</td>
+                <td>{{ books.author }}</td>
+                <td>{{ books.isbn }}</td>
             </tr>
             {% endfor %}
         </tbody>

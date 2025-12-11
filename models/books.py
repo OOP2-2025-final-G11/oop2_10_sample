@@ -1,8 +1,10 @@
-from peewee import Model, CharField, DecimalField
+from peewee import Model, CharField, SqliteDatabase
 from .db import db
 
 class Books(Model):
-    name = CharField()
+    title = CharField()
+    author = CharField()
+    isbn = CharField()
 
     class Meta:
         database = db

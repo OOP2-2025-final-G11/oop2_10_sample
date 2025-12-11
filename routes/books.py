@@ -7,7 +7,7 @@ books_bp = Blueprint('books', __name__, url_prefix='/books')
 
 @books_bp.route('/')
 def list():
-    books = books.select()
+    books = Books.select()
     return render_template('books_list.html', title='本一覧', items=books)
 
 
@@ -16,8 +16,10 @@ def add():
     
     # POSTで送られてきたデータは登録
     if request.method == 'POST':
-        name = request.form['name']
-        books.create(name=name)
+        title = request.form['title']
+        author = request.form['author']
+        isbn = request.form['isbn']
+        Books.create(title=title, author=author, isbn=isbn)
         return redirect(url_for('books.list'))
     
     return render_template('books_add.html')
@@ -25,12 +27,14 @@ def add():
 
 @books_bp.route('/edit/<int:books_id>', methods=['GET', 'POST'])
 def edit(books_id):
-    books = books.get_or_none(books.id == books_id)
+    books = Books.get_or_none(Books.id == books_id)
     if not books:
         return redirect(url_for('books.list'))
 
     if request.method == 'POST':
-        books.name = request.form['name']
+        books.title = request.form['title']
+        books.author = request.form['author']
+        books.isbn = request.form['isbn']
         books.save()
         return redirect(url_for('books.list'))
 

@@ -5,7 +5,7 @@ from .books import Books
 
 class Order(Model):
     user = ForeignKeyField(User, backref='orders')
-    product = ForeignKeyField(books, backref='orders')
+    books = ForeignKeyField(Books, backref='orders')
     order_date = DateTimeField()
 
     class Meta:
