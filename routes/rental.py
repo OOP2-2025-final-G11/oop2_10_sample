@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from models import Rental, User, Book
+from models import Rental, User, Books
 from datetime import datetime
 
 # Blueprintの作成
@@ -20,7 +20,7 @@ def add():
         return redirect(url_for('rental.list'))
     
     users = User.select()
-    books = Book.select()
+    books = Books.select()
     return render_template('rental_add.html', users=users, books=books)
 
 
@@ -32,12 +32,12 @@ def edit(rental_id):
 
     if request.method == 'POST':
         rental.user = request.form['user_id']
-        rental.book = request.form['book_id']
+        rental.books = request.form['book_id']
         rental.save()
         return redirect(url_for('rental.list'))
 
     users = User.select()
-    books = Book.select()
+    books = Books.select()
     return render_template('rental_edit.html', rental=rental, users=users, books=books)
 
 

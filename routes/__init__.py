@@ -6,7 +6,7 @@ from .book_request import book_request_bp
 # Blueprintをリストとしてまとめる
 blueprints = [
   user_bp,
-  rental_bp
+  rental_bp,
   books_bp,
   book_request_bp,
 ]
