@@ -30,13 +30,15 @@
         .then((json) => {
           const ctx = document.getElementById("rentalChart");
 
-          // 順位ラベルを作る（1位, 2位, ...）
-          const rankLabels = json.data.map((_, i) => `${i + 1}位`);
+          // 順位＋本タイトルを x軸に表示
+          const xLabels = json.labels.map(
+            (title, i) => `${i + 1}位\n${title}`
+          );
 
           new Chart(ctx, {
             type: "bar",
             data: {
-              labels: rankLabels,
+              labels: xLabels,
               datasets: [
                 {
                   label: "貸出回数",
@@ -45,17 +47,26 @@
               ],
             },
             options: {
-              responsive: true,
               plugins: {
                 legend: {
-                  position: "right",
+                  display: false,
                 },
-                tooltip: {
-                  callbacks: {
-                    label: function (context) {
-                      const index = context.dataIndex;
-                      return `${json.labels[index]}：${context.raw}回`;
-                    },
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    autoSkip: false, // ← 全部表示（重要）
+                  },
+                  title: {
+                    display: true,
+                    text: "順位（本のタイトル）",
+                  },
+                },
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "貸出回数",
                   },
                 },
               },
