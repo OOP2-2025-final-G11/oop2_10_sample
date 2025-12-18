@@ -3,10 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>注文管理システム</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='base-style.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .chart-container {
+        width: 70%;
+        margin: 1.5rem auto;
+      }
+    </style>
   </head>
   <body>
     <h1>注文管理システム</h1>
@@ -15,5 +19,53 @@
       <li><a href="{{ url_for('books.list') }}">本一覧</a></li>
       <li><a href="{{ url_for('rental.list') }}">本の貸し出し</a></li>
       <li><a href="{{ url_for('book_request.list') }}">本のリクエスト</a></li>
-      <li><a href="{{ url_for('user.chart') }}">利用者登録数の推移</a></li>
     </ul>
+
+    <h2>図書館ユーザー登録数の推移</h2>
+    <div class="chart-container">
+      <canvas id="userChart"></canvas>
+    </div>
+
+    <script>
+      const labels = {{ labels | tojson | safe }};
+      const counts = {{ counts | tojson | safe }};
+
+      new Chart(document.getElementById('userChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: '累計登録者数（人）',
+            data: counts,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0,
+                stepSize: 1
+              },
+              title: {
+                display: true,
+                text: '累計登録者数（人）'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: '年月'
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+  </html>
