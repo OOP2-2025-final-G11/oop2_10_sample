@@ -59,7 +59,7 @@ def edit(user_id):
 # ユーザー登録数グラフ（月別累計）
 @user_bp.route('/chart')
 def chart():
-    # 表示する年を固定（例：2025年）
+    # 表示する年を固定
     year = 2025
 
     # 月別ユーザー数を集計
