@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>図書館ユーザー登録数の推移</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<h1>図書館ユーザー登録数の推移</h1>
+
+<div class="chart-container">
+  <canvas id="userChart"></canvas>
+</div>
+
+<script>
+  const labels = {{ labels | tojson | safe }};
+  const counts = {{ counts | tojson | safe }};
+
+  new Chart(document.getElementById('userChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: '登録者数（人）',
+        data: counts
+      }]
+    }
+  });
+</script>
+</body>
+</html>
