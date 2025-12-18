@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from peewee import fn
 from models import Rental, User, Books
 from datetime import datetime
 
@@ -50,3 +51,20 @@ def return_book(rental_id):
         rental.save()
 
     return redirect(url_for('rental.list'))
+
+@rental_bp.route('/api/monthly_rentals')
+def monthly_rentals_api():
+    query = (
+        Rental
+        .select(
+            fn.strftime('%Y-%m', Rental.rental_date).alias('month'),
+            fn.COUNT(Rental.id).alias('count')
+        )
+        .group_by(fn.strftime('%Y-%m', Rental.rental_date))
+        .order_by(fn.strftime('%Y-%m', Rental.rental_date))
+    )
+
+    return jsonify({
+        "labels": [row.month for row in query],
+        "data": [row.count for row in query]
+    })
