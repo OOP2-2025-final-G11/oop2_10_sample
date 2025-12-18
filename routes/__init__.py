@@ -2,6 +2,7 @@ from .user import user_bp
 from .rental import rental_bp
 from .books import books_bp
 from .book_request import book_request_bp
+from .ranking import ranking_bp
 
 # Blueprintをリストとしてまとめる
 blueprints = [
@@ -9,4 +10,5 @@ blueprints = [
   rental_bp,
   books_bp,
   book_request_bp,
+  ranking_bp,
 ]
