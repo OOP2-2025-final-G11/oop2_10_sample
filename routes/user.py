@@ -3,7 +3,7 @@ from models import User
 from peewee import fn
 from datetime import datetime
 
-# Blueprint（トップページ用に url_prefix は空）
+# Blueprint
 user_bp = Blueprint('user', __name__, url_prefix='')
 
 
@@ -12,10 +12,8 @@ user_bp = Blueprint('user', __name__, url_prefix='')
 # =====================
 @user_bp.route('/')
 def index():
-    # 表示する年を固定
     year = 2025
 
-    # 月別ユーザー数を集計
     monthly_users = (
         User
         .select(
@@ -27,13 +25,9 @@ def index():
         .order_by(fn.strftime('%Y-%m', User.created_at))
     )
 
-    # 1月～12月のラベル
     labels = [f"{year}-{str(m).zfill(2)}" for m in range(1, 13)]
-
-    # データ辞書化
     counts_dict = {row.month: row.count for row in monthly_users}
 
-    # 累計カウントを作成
     counts = []
     cumulative = 0
     for month in labels:
@@ -62,17 +56,16 @@ def list():
 
 
 # =====================
-# ユーザー追加（手動日付入力）
+# ユーザー追加（日時自動取得）
 # =====================
 @user_bp.route('/users/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
         name = request.form['name']
         age = request.form['age']
-        created_at_str = request.form['created_at']
 
-        # YYYY-MM-DD → datetime
-        created_at = datetime.strptime(created_at_str, '%Y-%m-%d')
+        # 現在日時を自動取得
+        created_at = datetime.now()
 
         User.create(
             name=name,
