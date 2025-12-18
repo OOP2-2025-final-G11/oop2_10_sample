@@ -5,8 +5,8 @@ from .books import Books
 
 
 class Rental(Model):
-    user = ForeignKeyField(User, backref='rental')
-    books = ForeignKeyField(Books, backref='rental')
+    user = ForeignKeyField(User, backref='rentals', column_name='user_id')
+    books = ForeignKeyField(Books, backref='rentals', column_name='book_id')
     rental_date = DateTimeField()
     return_date = DateTimeField(null=True)
 
