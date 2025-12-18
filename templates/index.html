@@ -20,13 +20,16 @@
     <hr />
 
     <h2>月ごとの貸出数</h2>
-
+    <p id="chart-year" class="chart-year"></p>
     <canvas id="monthlyRentalChart" width="600" height="300"></canvas>
 
     <script>
       fetch("/rentals/api/monthly_rentals")
         .then((res) => res.json())
         .then((result) => {
+
+          document.getElementById("chart-year").textContent =
+        result.year + "年";
           const ctx = document.getElementById("monthlyRentalChart");
 
           new Chart(ctx, {
