@@ -8,7 +8,12 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='base-style.css') }}"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .chart-container {
+        width: 70%;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
     <h1>図書館管理システム</h1>
@@ -49,6 +54,11 @@
 
     <h2>📊 貸出ランキング</h2>
     <canvas id="rentalChart"></canvas>
+    
+    <h2>図書館ユーザー登録数の推移（{{ year }}年）</h2>
+    <div class="chart-container">
+      <canvas id="userChart" width="600" height="300"></canvas>
+    </div>
 
     <script>
       fetch("/rentals/api/monthly_rentals")
@@ -128,5 +138,47 @@
           });
         });
     </script>
+    <script>
+    const userLabels = {{ labels | tojson | safe }};
+    const userCounts = {{ counts | tojson | safe }};
+
+    const ctxUser = document.getElementById("userChart");
+    new Chart(ctxUser, {
+      type: "line",
+      data: {
+        labels: userLabels,
+        datasets: [{
+          label: "累計登録者数（人）",
+          data: userCounts,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0,
+              stepSize: 1
+            },
+            title: {
+              display: true,
+              text: '累計登録者数（人）'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '年月'
+            }
+          }
+        }
+      }
+    });
+  </script>
   </body>
 </html>
