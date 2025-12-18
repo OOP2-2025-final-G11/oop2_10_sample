@@ -8,6 +8,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='base-style.css') }}"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <h1>図書館管理システム</h1>
@@ -30,25 +31,31 @@
         <a class="button" href="{{ url_for('rental.add') }}">貸出</a>
         <a class="button" href="{{ url_for('rental.list') }}">貸出一覧</a>
       </div>
-      
+
       <h2>本のリクエスト</h2>
       <div class="button-group">
-        <a class="button" href="{{ url_for('book_request.add') }}">新規リクエスト</a>
-        <a class="button" href="{{ url_for('book_request.list') }}">リクエスト一覧</a>
+        <a class="button" href="{{ url_for('book_request.add') }}"
+          >新規リクエスト</a
+        >
+        <a class="button" href="{{ url_for('book_request.list') }}"
+          >リクエスト一覧</a
+        >
       </div>
     </div>
-  
+
     <h2>月ごとの貸出数</h2>
     <p id="chart-year" class="chart-year"></p>
     <canvas id="monthlyRentalChart" width="600" height="300"></canvas>
+
+    <h2>📊 貸出ランキング</h2>
+    <canvas id="rentalChart"></canvas>
 
     <script>
       fetch("/rentals/api/monthly_rentals")
         .then((res) => res.json())
         .then((result) => {
-
           document.getElementById("chart-year").textContent =
-        result.year + "年";
+            result.year + "年";
           const ctx = document.getElementById("monthlyRentalChart");
 
           new Chart(ctx, {
@@ -66,10 +73,58 @@
               responsive: true,
               scales: {
                 y: {
-                  beginAtZero: true
-                }
-              }
-            }
+                  beginAtZero: true,
+                },
+              },
+            },
+          });
+        });
+    </script>
+    <script>
+      fetch("/api/rental-ranking")
+        .then((res) => res.json())
+        .then((json) => {
+          const ctx = document.getElementById("rentalChart");
+
+          // 順位＋本タイトルを x軸に表示
+          const xLabels = json.labels.map((title, i) => `${i + 1}位\n${title}`);
+
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: xLabels,
+              datasets: [
+                {
+                  label: "貸出回数",
+                  data: json.data,
+                },
+              ],
+            },
+            options: {
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    autoSkip: false, // ← 全部表示（重要）
+                  },
+                  title: {
+                    display: true,
+                    text: "順位（本のタイトル）",
+                  },
+                },
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "貸出回数",
+                  },
+                },
+              },
+            },
           });
         });
     </script>
