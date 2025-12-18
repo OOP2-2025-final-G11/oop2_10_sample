@@ -1,4 +1,4 @@
-# アプリ名: library_management_system
+# アプリ名: LibraryManagementSystem
 
 概要:
 このアプリは図書館理システムです。図書の管理を行うことができます。

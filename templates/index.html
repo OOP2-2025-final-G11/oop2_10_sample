@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>注文管理システム</title>
+    <title>図書館管理システム</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       rel="stylesheet"
@@ -10,15 +10,34 @@
     />
   </head>
   <body>
-    <h1>注文管理システム</h1>
-    <ul>
-      <li><a href="{{ url_for('user.list') }}">ユーザー（利用者）</a></li>
-      <li><a href="{{ url_for('books.list') }}">本一覧</a></li>
-      <li><a href="{{ url_for('rental.list') }}">本の貸し出し</a></li>
-      <li><a href="{{ url_for('book_request.list') }}">本のリクエスト</a></li>
-    </ul>
-    <hr />
+    <h1>図書館管理システム</h1>
 
+    <div class="form-container">
+      <h2>ユーザー（利用者）</h2>
+      <div class="button-group">
+        <a class="button" href="{{ url_for('user.add') }}">新規登録</a>
+        <a class="button" href="{{ url_for('user.list') }}">利用者一覧</a>
+      </div>
+
+      <h2>本</h2>
+      <div class="button-group">
+        <a class="button" href="{{ url_for('books.add') }}">新規登録</a>
+        <a class="button" href="{{ url_for('books.list') }}">本一覧</a>
+      </div>
+
+      <h2>本の貸出</h2>
+      <div class="button-group">
+        <a class="button" href="{{ url_for('rental.add') }}">貸出</a>
+        <a class="button" href="{{ url_for('rental.list') }}">貸出一覧</a>
+      </div>
+      
+      <h2>本のリクエスト</h2>
+      <div class="button-group">
+        <a class="button" href="{{ url_for('book_request.add') }}">新規リクエスト</a>
+        <a class="button" href="{{ url_for('book_request.list') }}">リクエスト一覧</a>
+      </div>
+    </div>
+  
     <h2>月ごとの貸出数</h2>
     <p id="chart-year" class="chart-year"></p>
     <canvas id="monthlyRentalChart" width="600" height="300"></canvas>
