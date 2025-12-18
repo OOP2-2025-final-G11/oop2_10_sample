@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from models import User
+#日時取得のため
 from peewee import fn
 from datetime import datetime
 
@@ -7,9 +8,7 @@ from datetime import datetime
 user_bp = Blueprint('user', __name__, url_prefix='/users')
 
 
-# =====================
 # ユーザー一覧
-# =====================
 @user_bp.route('/')
 def list():
     users = User.select()
@@ -20,9 +19,7 @@ def list():
     )
 
 
-# =====================
 # ユーザー追加（手動日付入力）
-# =====================
 @user_bp.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -43,9 +40,7 @@ def add():
     return render_template('user_add.html')
 
 
-# =====================
 # ユーザー編集
-# =====================
 @user_bp.route('/edit/<int:user_id>', methods=['GET', 'POST'])
 def edit(user_id):
     user = User.get_or_none(User.id == user_id)
@@ -61,9 +56,7 @@ def edit(user_id):
     return render_template('user_edit.html', user=user)
 
 
-# =====================
 # ユーザー登録数グラフ（月別累計）
-# =====================
 @user_bp.route('/chart')
 def chart():
     # 表示する年を固定（例：2025年）
