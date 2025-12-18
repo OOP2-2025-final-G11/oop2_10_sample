@@ -54,17 +54,30 @@ def return_book(rental_id):
 
 @rental_bp.route('/api/monthly_rentals')
 def monthly_rentals_api():
+    year = datetime.now().year
     query = (
         Rental
         .select(
-            fn.strftime('%Y-%m', Rental.rental_date).alias('month'),
+            fn.strftime('%m', Rental.rental_date).alias('month'),
             fn.COUNT(Rental.id).alias('count')
         )
-        .group_by(fn.strftime('%Y-%m', Rental.rental_date))
-        .order_by(fn.strftime('%Y-%m', Rental.rental_date))
+        .where(fn.strftime('%Y', Rental.rental_date) == str(year))
+        .group_by(fn.strftime('%m', Rental.rental_date))
     )
 
+    monthly_counts = {row.month: row.count for row in query}
+
+    #1〜12月を必ず用意（無い月は0）
+    labels = []
+    data = []
+
+    for m in range(1, 13):
+        month_str = f"{m:02d}"
+        labels.append(f"{m}月")
+        data.append(monthly_counts.get(month_str, 0))
+
     return jsonify({
-        "labels": [row.month for row in query],
-        "data": [row.count for row in query]
+        "year": year,
+        "labels": labels,
+        "data": data
     })
